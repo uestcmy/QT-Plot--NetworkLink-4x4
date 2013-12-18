@@ -1,0 +1,13 @@
+This is a QT project for Prof.Ling Xiang.
+
+This project is a plot program which plot the 4x4 core information.
+
+Alghough the figure is flat(2D), the real figure is 3D.
+
+----------
+|  |  |  |
+----------
+|  |  |  |
+----------
+|  |  |  |
+----------
