@@ -156,6 +156,11 @@ void NetworkLink::paintGL()
     FPGAtransparent(+0.4,-2,2.66,0.2);
     FPGAtransparent(+0.4,-2,0,0.2);
     flowplot(0,0,0);
+
+
+
+
+
 }
 void NetworkLink::flowplot(double x,double y,double z){
     double tube[4][4][4];
@@ -187,29 +192,29 @@ void NetworkLink::flowplot(double x,double y,double z){
         for(int j = 0 ; j < 4 ; j++){
 
             if(map_net[i][j] >= 30000){
-                 map_net[i][j] = 0;
-                 memset(map_net,0,sizeof(int)*20);
+                map_net[i][j] = 0;
+                memset(map_net,0,sizeof(int)*20);
                  memset(map_net_2,0,sizeof(int)*20);
                  memset(map_net_3,0,sizeof(int)*20);
                  memset(map_net_4,0,sizeof(int)*20);
             }
             if(map_net_2[i][j] >= 30000){
-                 map_net[i][j] = 0;
-                 memset(map_net,0,sizeof(int)*20);
+                map_net[i][j] = 0;
+                memset(map_net,0,sizeof(int)*20);
                  memset(map_net_2,0,sizeof(int)*20);
                  memset(map_net_3,0,sizeof(int)*20);
                  memset(map_net_4,0,sizeof(int)*20);
             }
             if(map_net_3[i][j] >= 30000){
-                 map_net[i][j] = 0;
-                 memset(map_net,0,sizeof(int)*20);
+                map_net[i][j] = 0;
+                memset(map_net,0,sizeof(int)*20);
                  memset(map_net_2,0,sizeof(int)*20);
                  memset(map_net_3,0,sizeof(int)*20);
                  memset(map_net_4,0,sizeof(int)*20);
             }
             if(map_net_4[i][j] >= 30000){
-                 map_net[i][j] = 0;
-                 memset(map_net,0,sizeof(int)*20);
+                map_net[i][j] = 0;
+                memset(map_net,0,sizeof(int)*20);
                  memset(map_net_2,0,sizeof(int)*20);
                  memset(map_net_3,0,sizeof(int)*20);
                  memset(map_net_4,0,sizeof(int)*20);
@@ -222,10 +227,13 @@ void NetworkLink::flowplot(double x,double y,double z){
 
         }
     }
+
+
     flowh33(map_net_2[2][0],map_net_2[2][1],map_net_2[2][2],map_net_2[2][3]);// east,north,west,south  B
     flowh34(map_net_2[3][0],map_net_2[3][1],map_net_2[3][2],map_net_2[3][3]);
     flowh32(map_net_2[1][0],map_net_2[1][1],map_net_2[1][2],map_net_2[1][3]);
     flowh31(map_net_2[0][0],map_net_2[0][1],map_net_2[0][2],map_net_2[0][3]);
+
 
     flowh41(map_net[0][0],map_net[0][1],map_net[0][2],map_net[0][3]);//A
     flowh42(map_net[1][0],map_net[1][1],map_net[1][2],map_net[1][3]);
@@ -853,9 +861,9 @@ void NetworkLink::timerEvent(QTimerEvent *event){
     //fcntl(sockser_net,FIONBIO,(u_long*)&iMode);
     recvfrom(sockser_net,&buff,4096*3+1,0,(struct sockaddr *)&addrrcv_net,(socklen_t*)&intsize_net);
     qDebug() << "Counter is " << cnt++ << endl;
-    //qDebug() << buff << endl;
+    qDebug() << buff << endl;
     search_core_data_mygl2_net(buff);// to out_mygl2_net_A
-    if(endmark_net == 1){
+     if(endmark_net == 1){
         endmark_net = 0;
          for( int i = 0 ; i < 84 ; i ++){
             int position = i * 6;
@@ -951,7 +959,7 @@ void NetworkLink::timerEvent(QTimerEvent *event){
      }//if
 
 
-    search_core_data_mygl2_net_2(buff);// to out_mygl2_net_B , resemble : out_mygl2_net_2
+    search_core_data_mygl2_net_2(buff);// to out_mygl2_net_B
     if( endmark_net_2 == 1){
         endmark_net_2 = 0;
          for( int i = 0 ; i < 84 ; i ++){
@@ -1145,7 +1153,7 @@ void NetworkLink::timerEvent(QTimerEvent *event){
     }
 
 
-    search_core_data_mygl2_net_4(buff);// to out_mygl2_net D
+    search_core_data_mygl2_net_4(buff);// to out_mygl2_net
     if( endmark_net_4 == 1){
         endmark_net_4 = 0;
          for( int i = 0 ; i < 84 ; i ++){
@@ -1162,7 +1170,7 @@ void NetworkLink::timerEvent(QTimerEvent *event){
             out_mygl2_net_4[position+3] = tmp;
          }//for
 
-         qDebug() << out_mygl2_net_4 << endl;
+         qDebug() << out_mygl2_net_4 << endl;// fpga D
          for(int i = 1 ; i <= 20; i++ ){
              char mark[2];
              mark[0] = out_mygl2_net_4[i*12];
@@ -1353,6 +1361,7 @@ void search_core_data_mygl2_net(  char* buff ){
     int find = 0;//consider that there is no header?
     for( i = 0 ; i < LEN - 10 ; i++ ){
         //search the header of the core-frame
+
         if(buff[i] == 'a' && buff[i+1] == 'a' && buff[i+2] == ',' && buff[i+3] == 'a' && buff[i+4] == '0' && buff[i+5] == ',' && buff[i+6] == '2' && buff[i+7] == '8' && buff[i+8] == ',' && buff[i+9] == '4' && buff[i+10] == '0'){
             find = 1;
             break;
@@ -1494,7 +1503,7 @@ void  search_core_data_mygl2_net_4(char *buff){
     for( i = 0 ; i < LEN - 10 ; i++ ){
         //search the header of the core-frame
 
-        if(buff[i] == 'a' && buff[i+1] == 'a' && buff[i+2] == ',' && buff[i+3] == 'a' && buff[i+4] == '0' && buff[i+5] == ',' && buff[i+6] == '2' && buff[i+7] == '8' && buff[i+8] == ',' && buff[i+9] == 'a' && buff[i+10] == '0'){
+        if(buff[i] == 'a' && buff[i+1] == 'a' && buff[i+2] == ',' && buff[i+3] == 'a' && buff[i+4] == '0' && buff[i+5] == ',' && buff[i+6] == '2' && buff[i+7] == '8' && buff[i+8] == ',' && buff[i+9] == '9' && buff[i+10] == '0'){
 
             find = 1;
             break;
